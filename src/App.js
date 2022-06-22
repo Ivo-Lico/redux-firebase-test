@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
-
+import {Provider} from "react-redux"
+import store from "./store";
+import Cards from "./components/Cards";
+import React,{useState} from "react";
+import { app } from './firebasefolder/Firebase';
+import {getAuth, onAuthStateChanged} from "firebase/auth"
+const auth = getAuth(app)
 function App() {
+
+const[usuarioglobal, setusuarioglobal] = useState(null)
+
+onAuthStateChanged(auth, (usuarioFirebase) =>{
+  if(usuarioFirebase){
+    setusuarioglobal(usuarioFirebase)
+  }
+  else{
+    setusuarioglobal(null)
+  }
+})
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <Provider store={store}>
+    <div>
+      <>
+     <Cards correoUsuario={usuarioglobal}  />
+      </>
     </div>
+    </Provider>
   );
 }
 
