@@ -1,0 +1,31 @@
+#googlebutton{
+    background-color: #4285f4;
+    font-family: Roboto,arial,sans-serif;
+    color: #fff;
+    border: none;
+    height: 50px;
+    padding: 0px;
+    margin: 0px;
+}
+#googlebutton span:nth-child(1){
+    background-color: #fff;
+    padding: 15px;
+    vertical-align: top;
+    height: 50px;
+    margin: 0px;
+}
+#googlebutton span:nth-child(2){
+    padding: 12px;
+}
+#googlebutton span img{
+    width: 25px;
+}
+#titulo{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 12vh;
+    border: solid 1px #f1f1f1;
+}
+@import url(https://fonts.googleapis.com/css?family=Roboto:500);

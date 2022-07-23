@@ -1,33 +1,31 @@
 import {Provider} from "react-redux"
 import store from "./store";
 import Cards from "./components/Cards";
-import React,{useState} from "react";
-import { app } from './firebasefolder/Firebase';
+import Logueo from "./components/Logueo";
+import React,{useState,useEffect} from "react";
+import firebaseApp from "./firebasefolder/credenciales";
 import {getAuth, onAuthStateChanged} from "firebase/auth"
-const auth = getAuth(app)
 function App() {
+const auth = getAuth(firebaseApp)
+const [usuarioGlobal, setUsuarioGlobal] = useState(null)
+onAuthStateChanged(auth, (usuarioFirebase)=>{
 
-const[usuarioglobal, setusuarioglobal] = useState(null)
-
-onAuthStateChanged(auth, (usuarioFirebase) =>{
   if(usuarioFirebase){
-    setusuarioglobal(usuarioFirebase)
+setUsuarioGlobal(usuarioFirebase)
   }
+
   else{
-    setusuarioglobal(null)
-  }
+    setUsuarioGlobal(null)
+}
 })
-
-
   return (
     <Provider store={store}>
     <div>
       <>
-     <Cards correoUsuario={usuarioglobal}  />
+     {usuarioGlobal ? <Cards correoUsuario={usuarioGlobal.email} /> : <Logueo />}
       </>
     </div>
     </Provider>
   );
 }
-
 export default App;
