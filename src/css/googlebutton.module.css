@@ -21,11 +21,83 @@
     width: 25px;
 }
 #titulo{
-    width: 100%;
+    width: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 12vh;
+    margin: 0px;
+    font-size: 1.5rem;
+}
+#jugarcontenedor{
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+#jugarcontenedor2{
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+#contbotonjugar{
+    padding: 4vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 50vh;
+    width: 100%;
+}
+#puntos{
+    padding: 4vh;
+    color: green;
+    border: solid 1px black;
+    background-color: white;
+    border-radius: 12px;
+    margin: 0px;
+}
+.buttons{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+#header{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
     border: solid 1px #f1f1f1;
+    background-color: #4285f4;
+    padding: 4vh;
+    max-height: 25vh;
+}
+#cartitas{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4vw;
+}
+.carta{
+    padding: 4vw;
+}
+#resultado{
+    width: 80%;
+    font-size: 1.5rem;
+    border: solid 1px green;
+    border-radius: 12px;
+    padding: 12px;
+}
+#contenedorresultado{
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
 }
 @import url(https://fonts.googleapis.com/css?family=Roboto:500);

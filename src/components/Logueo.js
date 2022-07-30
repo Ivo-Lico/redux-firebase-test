@@ -17,7 +17,7 @@ async function submitHandler(e){
     const correo = e.target.email.value
     const contra = e.target.password.value
     console.log(correo,contra)
-    if(estaRegistrandose){
+    if(!estaRegistrandose){
         try{
             const usuario = await createUserWithEmailAndPassword(auth, correo, contra)
             console.log(usuario)

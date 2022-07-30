@@ -5,18 +5,25 @@ import { jugar } from '../actions/cardsAction';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'reactstrap';
 import styles from '../css/googlebutton.module.css'
-import google from '../images/google.png'
 import firebaseApp from '../firebasefolder/credenciales';
 import {getAuth, signOut} from "firebase/auth"
 import {getFirestore, doc, getDoc, setDoc, updateDoc} from "firebase/firestore"
-import juego from '../helpers/juego'
+
+import Card1 from './Card1.js' 
+import Card2 from './Card2' 
+import Card3 from './Card3' 
+import Card4 from './Card4' 
+import Card5 from './Card5'
 export default function Cards({correoUsuario}) {
 
-const [puntosDelJugador, setpuntosDelJugador] = useState(100)  
-const [arrayPuntos, setArrayPuntos] = useState(null)
+// const [puntosDelJugador, setpuntosDelJugador] = useState(100)  
+const [arrayPuntos, setArrayPuntos] = useState(100)
 const [resultado, setresultado] = useState("")
-const [resultado2, setresultado2] = useState("")
-
+const [show, setShow] = useState(false)
+const [toggle, setToggle] = useState(true)
+const [changeStyle, setChangeStyle] = useState(styles.jugarcontenedor)
+const [showCards, setShowCards] = useState(false)
+const [showRes, setShowRes] = useState(false)
 
 const auth = getAuth(firebaseApp)
 const firestore = getFirestore(firebaseApp)
@@ -41,7 +48,7 @@ async function buscarOCrearDocs(idDocumento){
       return infoDocu.puntos
   }
     else{
-      await setDoc(docuRef, {puntos:      puntosDelJugador })
+      await setDoc(docuRef, {puntos:      arrayPuntos })
       const consulta = await getDoc(docuRef)
       const infoDocu = consulta.data()
       return infoDocu.puntos
@@ -50,47 +57,113 @@ async function buscarOCrearDocs(idDocumento){
 
 function guardarPuntos(){
     const docuRef = doc(firestore,`usuarios/${correoUsuario}`)
-    updateDoc(docuRef, {puntos: puntosDelJugador})
-    setArrayPuntos(puntosDelJugador)
+    updateDoc(docuRef, {puntos: arrayPuntos})
+    setArrayPuntos(arrayPuntos)
   }
+
+  const ganar = ()=>{
+
+    let mapeo = state.cards.map(element => element.name)
+
+    const eevee = (element) => element === "eevee";
+
+    const magikarp = (element) => element === "magikarp";
+
+    let resultToReturn = false;
+    resultToReturn = mapeo.some((element, index) => {
+        return mapeo.indexOf(element) !== index
+    })
+    if(mapeo.some(magikarp)){
+      setresultado("Perdiste 25 puntos, hay al menos un magikarp xd")
+      setArrayPuntos(arrayPuntos - 25)
+    }
+    if(mapeo.some(eevee) && resultToReturn){
+      setresultado("Combooooo, ganaste 250 puntos")
+        setArrayPuntos(arrayPuntos + 250)
+    }
+
+    //Chequear si hay algún eevee
+    else if(mapeo.some(eevee)){
+      setresultado("Ganaste 50 puntos, hay al menos un eevee")
+      setArrayPuntos(arrayPuntos + 50)
+    }
+
+    //Chequear repetidos
+    else if(resultToReturn) {
+      setresultado("Ganaste 25 puntos, hay al menos un repetido")
+      setArrayPuntos(arrayPuntos + 25)
+        }
+        
+    else setresultado("Perdiste")
+  }
+
 
   return (
     <div>
+      <header id={styles.header}>
         <h2 id={styles.titulo}>
-            Juego de cartas Pokemon
+            Random Pokemon
         </h2>
-        <div id={styles.jugarcontenedor}>
-        <Button
+        <h4 id={styles.puntos}>{arrayPuntos ? arrayPuntos : null}</h4>
+        </header>
+        {showCards ? <div id={styles.cartitas}>
+          <div className={styles.carta}>
+          {state.cards[0].url ? <Card1 url={state.cards[0].url}></Card1> : null}
+          </div>
+          <div className={styles.carta}>
+          {state.cards[1].url ? <Card2 url={state.cards[1].url}></Card2> : null}
+          </div >
+          <div className={styles.carta}>
+          {state.cards[2].url ? <Card3 url={state.cards[2].url}></Card3> : null}
+          </div >
+          <div className={styles.carta}>
+          {state.cards[3].url ? <Card4 url={state.cards[3].url}></Card4> : null}
+          </div >
+          <div className={styles.carta}>
+          {state.cards[4].url ? <Card5 url={state.cards[4].url}></Card5> : null}
+          </div >
+          </div> : null}
+        <div id={changeStyle}>
+          <div id={styles.contbotonjugar}>
+            <div>
+        {toggle ? <Button
     color="primary" onClick={()=>{
           dispatch(jugar())
-          setpuntosDelJugador(puntosDelJugador - 25)
-          setresultado2(null)
+          setArrayPuntos(arrayPuntos - 25)
           setresultado(null)
-          }}>Jugar</Button>
+          setShow(true)
+          setToggle(false)
+          setChangeStyle(styles.jugacontenedor2)
+          setShowCards(true)
+          setShowRes(false)
+          }}>Jugar</Button> : null}
           </div>
-        <div>{puntosDelJugador}</div>
-        <div>{state.cards[0]}</div>
-        <div>{state.cards[1]}</div>
-        <div>{state.cards[2]}</div>
-        <div>{state.cards[3]}</div>
-        <div>{state.cards[4]}</div>    
+          { showRes ? <ul id={styles.contenedorresultado}>
+          <li id={styles.resultado}>{resultado}</li>
+          </ul> : null}
+          { show ? <section>         
 <div>
 <Button color='success' onClick={()=>{
-          juego(state,setresultado,setresultado2,puntosDelJugador, setpuntosDelJugador)
+          ganar()
+          setChangeStyle(styles.jugarcontenedor)
+          setToggle(true)
+          setShow(false)
+          setShowCards(false)
+          setShowRes(true)
         }}>Ver resultados</Button>
-</div>
-          <h2>{resultado}</h2>
-          <h2>{resultado2}</h2>
-         <button id={styles.googlebutton}> <span><img src={google} alt="" /></span><span>Login con google</span></button>
-          <div>
-  <Button 
+</div></section> : null} 
+           <div className={styles.buttons}>
+  <Button  color="primary" 
  onClick={()=> guardarPuntos()}
   >
     Guardar puntos
   </Button>
-  <button onClick={()=>signOut(auth)}>Cerrar sesión</button>
-  <h4>{arrayPuntos ? arrayPuntos : null}</h4>
-</div>
-    </div>
+  <Button onClick={()=>signOut(auth)}>Cerrar sesión</Button>
+</div>  
+          </div>
+            <div>
+            </div>
+          </div>  
+    </div> 
   )
 }

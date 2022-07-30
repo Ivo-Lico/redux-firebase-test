@@ -1,13 +1,12 @@
 import { POKEMONES, JUGAR } from "../types";
 
 
-
 const numeroRandom = ()=>{
    return (Math.round(Math.random() * (0,11)))
 }
 
 const pokemonRandom = ()=>{
-   let cartas = [arraypokemones[numeroRandom()].name, arraypokemones[numeroRandom()].name, arraypokemones[numeroRandom()].name, arraypokemones[numeroRandom()].name, arraypokemones[numeroRandom()].name]
+   let cartas = [arraypokemones[numeroRandom()], arraypokemones[numeroRandom()], arraypokemones[numeroRandom()], arraypokemones[numeroRandom()], arraypokemones[numeroRandom()]]
    console.log(cartas)
    return (cartas)
 }
